@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: laravel-api
+    runtime: docker
+    plan: free
+    region: oregon
+    branch: main
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: APP_KEY
+        generateValue: true
+      - key: DB_CONNECTION
+        value: sqlite
