@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\DB; // 👈 ADICIONE ESTA LINHA
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TaskController;
 
@@ -31,5 +32,14 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/debug/tarefas', function () {
         // Apenas como teste, retorna todas as tarefas
         return DB::table('tasks')->get();
+    });
+
+    // Rota para confirmar o banco de dados em uso
+    Route::get('/check-db', function () {
+        return response()->json([
+            'connection' => DB::getDefaultConnection(),
+            'database' => DB::connection()->getDatabaseName(),
+            'host' => DB::getConfig('pgsql')['host'] ?? 'localhost',
+        ]);
     });
 });
