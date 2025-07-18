@@ -26,4 +26,10 @@ Route::middleware('auth:api')->group(function () {
 
     // Logout
     Route::post('/logout', [AuthController::class, 'logout']);
+
+    // Teste para ver funcionamento do banco de dados
+    Route::get('/debug/tarefas', function () {
+        // Apenas como teste, retorna todas as tarefas
+        return DB::table('tarefas')->get();
+    });
 });
