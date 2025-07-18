@@ -20,6 +20,7 @@ class TaskController extends BaseController
          $user = auth('api')->user();
 
          if (!$user) {
+             \Log::warning('Usuario NAO autenticado ao acessar /api/tasks.');
              return response()->json(['error' => 'Usuario nao autenticado'], 401);
          }
 
