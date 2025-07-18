@@ -11,25 +11,30 @@ RUN apt-get update && apt-get install -y \
     unzip \
     curl \
     git \
+    libpq-dev  \
     sqlite3 \
     libsqlite3-dev
 
-# Instala extensões PHP
-RUN docker-php-ext-install pdo pdo_mysql pdo_sqlite mbstring exif pcntl bcmath gd
+# Instala extensões PHP necessárias
+RUN docker-php-ext-install pdo pdo_pgsql pdo_mysql pdo_sqlite mbstring exif pcntl bcmath gd
 
 # Instala Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Cria diretório da aplicação
+# Define diretório da aplicação
 WORKDIR /var/www
 
+# Copia os arquivos do projeto
 COPY . .
 
+# Instala dependências PHP via Composer
 RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 
-# Dá permissão
+# Ajusta permissões para o Laravel funcionar
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
 
-EXPOSE 8000
+# Expõe a porta que o Laravel vai usar
+EXPOSE 10000
 
-CMD php artisan serve --host=0.0.0.0 --port=8000
+# Comando para rodar o servidor no Render
+CMD php artisan serve --host=0.0.0.0 --port=10000
