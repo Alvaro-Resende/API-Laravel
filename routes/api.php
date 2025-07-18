@@ -30,6 +30,6 @@ Route::middleware('auth:api')->group(function () {
     // Teste para ver funcionamento do banco de dados
     Route::get('/debug/tarefas', function () {
         // Apenas como teste, retorna todas as tarefas
-        return DB::table('tarefas')->get();
+        return DB::table('tasks')->get();
     });
 });
