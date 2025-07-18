@@ -17,10 +17,16 @@ class TaskController extends BaseController
     // GET /api/tasks
     public function index()
     {
-        $user = auth('api')->user();
-        $tasks = Task::where('user_id', $user->id)->get();
+         $user = auth('api')->user();
 
-        return response()->json($tasks);
+         if (!$user) {
+             return response()->json(['error' => 'Usuario nao autenticado'], 401);
+         }
+
+         \Log::info('Usuario autenticado: ', ['id' => $user->id, 'email' => $user->email]);
+
+         $tasks = Task::where('user_id', $user->id)->get();
+         return response()->json($tasks);
     }
 
     // POST /api/tasks
